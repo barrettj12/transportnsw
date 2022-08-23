@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 
-const TRAVELER_ID = "5f5a27f2-a19e-4098-9829-827388e2ab1a"
+const TRAVELER_ID = "2e4c3695-eedf-4040-b232-dbb1801d8041"
 const DEP_STATION = "YAS"
 const ARR_STATION = "MEL"
-const START_DATE = new Date()
-const END_DATE = new Date(2022,6,1)
+const START_DATE = new Date(2022,9,20)
+const END_DATE = new Date(2022,10,1)
 
 console.log(DEP_STATION, '=>', ARR_STATION)
 
