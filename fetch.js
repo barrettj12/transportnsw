@@ -1,32 +1,24 @@
 import fetch from 'node-fetch';
 
-const TRAVELER_ID = "2e4c3695-eedf-4040-b232-dbb1801d8041"
 const DEP_STATION = "YAS"
 const ARR_STATION = "MEL"
-const START_DATE = new Date(2022,9,20)
-const END_DATE = new Date(2022,10,1)
+const START_DATE = new Date("18 May 2023")
+const END_DATE = new Date("19 May 2023")
+
+// Get traveler ID
+const r = await fetch("https://transportnsw.info/api/trainlink/travelers", {
+  "body": "[{\"travelerType\":\"ADULT\"}]", "method": "POST"
+});
+const data = await r.json()
+const TRAVELER_ID = data["data"]["travelerIds"][0]["id"]
+console.log(`got traveler ID ${TRAVELER_ID}`)
 
 console.log(DEP_STATION, '=>', ARR_STATION)
 
-for (var DATE = START_DATE; DATE < END_DATE; DATE.setDate(DATE.getDate() + 1)){
-  // console.log(printDate(DATE))
-
+for (var DATE = START_DATE; DATE <= END_DATE; DATE.setDate(DATE.getDate() + 1)){
   const r = await fetch("https://transportnsw.info/api/trainlink/search", {
-    "headers": {
-      "accept": "application/json",
-      "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-      "content-type": "application/json",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-origin",
-      "sec-gpc": "1"
-    },
-    "referrer": "https://transportnsw.info/regional-bookings/select-trip?from=MEL&to=YAS&dateTime=2022-04-28T00:00:00&P_0_PT=A",
-    "referrerPolicy": "strict-origin-when-cross-origin",
     "body": "{\"searchCriteria\":{\"travelerIds\":[\"" + TRAVELER_ID + "\"],\"departureStationCode\":\"" + DEP_STATION + "\",\"arrivalStationCode\":\"" + ARR_STATION + "\",\"departureDateTime\":\"" + printDate(DATE) + "T00:00:00\",\"travelers\":[{\"travelerType\":\"ADULT\"}],\"isReturnOffer\":false}}",
     "method": "POST",
-    "mode": "cors",
-    "credentials": "omit"
   });
   const data = await r.json()
 
@@ -53,9 +45,6 @@ for (var DATE = START_DATE; DATE < END_DATE; DATE.setDate(DATE.getDate() + 1)){
     console.log('$' + price, depDate.toDateString(), time(depDate), '=>', time(arrDate))
   }
 }
-// const thing = 
-
-// console.log(thing)
 
 function printT(obj) {
   console.log(obj, ":", typeof obj)
